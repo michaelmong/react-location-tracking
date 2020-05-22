@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 //let i = 1;    /*debug*/
 
 const GetLocation = () => {
     const [latlong, setLatLong] = useState({
-        lat: null,
-        long: null,
+        lat: 0,
+        long: 0,
     });
 
     const updateLocation = (position) => {
@@ -15,8 +16,20 @@ const GetLocation = () => {
         });
     }
 
+    const postDataAxios = async () => {
+        const response = await axios.post(
+            'http://localhost:3773/api',
+            latlong,
+            {
+                headers: { 'Content-Type': 'application/json' },
+//                httpsAgent: new https.Agent({ rejectUnauthorized: false })
+            }
+        ).then((res) => console.log(res.data));
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {navigator.geolocation.getCurrentPosition(updateLocation);/*console.log(i++);*/}, 5000);
+        postDataAxios();
         return () => clearInterval(interval);
     });
 
