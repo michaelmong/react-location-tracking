@@ -3,23 +3,25 @@ import axios from 'axios';
 
 //let i = 1;    /*debug*/
 
-const GetLocation = () => {
-    const [latlong, setLatLong] = useState({
+const GetLocation = (props) => {
+    const [data, setData] = useState({
         lat: 0,
         long: 0,
+        id: props.id,
     });
 
     const updateLocation = (position) => {
-        setLatLong({
+        setData({
             lat: position.coords.latitude,
-            long: position.coords.longitude
+            long: position.coords.longitude,
+            id: props.id,
         });
     }
 
     const postDataAxios = async () => {
         const response = await axios.post(
             'http://localhost:3773/api',
-            latlong,
+            data,
             {
                 headers: { 'Content-Type': 'application/json' },
 //                httpsAgent: new https.Agent({ rejectUnauthorized: false })
@@ -35,8 +37,10 @@ const GetLocation = () => {
 
     return(
         <div>
-            <p>Latitude: {latlong.lat} </p>
-            <p>Longitude: {latlong.long} </p>
+            <p>ID: {data.id} </p>
+            <p>Latitude: {data.lat} </p>
+            <p>Longitude: {data.long} </p>
+            <p>{props.id}</p>
         </div>
     );
 }
