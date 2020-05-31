@@ -9,6 +9,11 @@ const GetLocation = (props) => {
         long: 0,
         id: props.id,
     });
+    const [log1, setLog1] = useState("");
+    let log1msg = "";
+    const [log2, setLog2] = useState("");
+    let log2msg = "";
+    const[timer, setTimer] = useState(1000);
 
     const updateLocation = (position) => {
         setData({
@@ -16,6 +21,7 @@ const GetLocation = (props) => {
             long: position.coords.longitude,
             id: props.id,
         });
+        setTimer(5000);
     }
 
     const postDataAxios = async () => {
@@ -26,21 +32,34 @@ const GetLocation = (props) => {
                 headers: { 'Content-Type': 'application/json' },
 //                httpsAgent: new https.Agent({ rejectUnauthorized: false })
             }
-        ).then((res) => console.log(res.data));
+        ).then((res) => {
+            log2msg += "done.";
+            setLog2(log2msg);
+        });
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {navigator.geolocation.getCurrentPosition(updateLocation);/*console.log(i++);*/}, 5000);
+        log1msg = "Reading location...";
+        log2msg = "";
+        setLog1(log1msg);
+        setLog2(log2msg);
+        const interval = setInterval(() => {navigator.geolocation.getCurrentPosition(updateLocation);}, timer);
+        log1msg += "done.";
+        if ((data.lat == "0") && (data.long == "0")) {
+            log2msg = "Preparing data to upload...";
+        } else {
+            log2msg = "Uploading (user id = " + data.id + ", Latitude = " + data.lat + ", Longitude = " + data.long + ")...";
+        }
+        setLog1(log1msg);
+        setLog2(log2msg);
         postDataAxios();
         return () => clearInterval(interval);
-    });
+    }, [data]);
 
     return(
         <div>
-            <p>ID: {data.id} </p>
-            <p>Latitude: {data.lat} </p>
-            <p>Longitude: {data.long} </p>
-            <p>{props.id}</p>
+            <p>{ log1 }</p>
+            <p>{ log2 }</p>
         </div>
     );
 }

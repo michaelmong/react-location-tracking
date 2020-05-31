@@ -29,11 +29,7 @@ const LoginFacebook = (props) => {
 
     state.auth ?
         facebookData = (
-            <div>
-                <h4>Hi, { state.name } </h4>
-                <h6>( { state.email } )</h6>
-                <img src= {state.picture} alt= {state.name} />
-            </div>
+            <></>
         ) :
         facebookData = (
             <FacebookLoginBtn
