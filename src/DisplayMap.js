@@ -22,13 +22,15 @@ const DisplayMap = compose(
   const getDataAxios = async () => {
     let httpGetAPI = 'http://localhost:3773/api/' + props.id;
     const response = await axios.get(httpGetAPI).then((res) => {
-      console.log(res.data);
+      console.log(res.data[0].time);
     });
   };
 
+  getDataAxios();
+
   return(
     <GoogleMap
-      defaultZoom={8}
+      defaultZoom={10}
       defaultCenter={ location }
     >
     <Marker position={ location } />
