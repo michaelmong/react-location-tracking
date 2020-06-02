@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { compose, withProps } from "recompose";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import axios from 'axios';
@@ -14,27 +14,38 @@ const DisplayMap = compose(
   withGoogleMap
 )((props) => {
 
+  let timer = 10000;
+
   const [location, setLocation] = useState({
       lat: 13.7563,
       lng: 100.5018,
   })
-  
+
+  let newLat = 0.0;
+  let newLng = 0.0;
   const getDataAxios = async () => {
     let httpGetAPI = 'http://localhost:3773/api/' + props.id;
     const response = await axios.get(httpGetAPI).then((res) => {
-      console.log(res.data[0].time);
+      let newLocation = { lat: res.data.latitude, lng: res.data.longitude, };
+      setLocation(newLocation);
     });
   };
 
-  getDataAxios();
+  useEffect(() => {
+    const interval = setInterval(() => { getDataAxios(); }, timer);
+    return () => clearInterval(interval);
+  }, [location])
 
   return(
+    <div>
     <GoogleMap
       defaultZoom={10}
       defaultCenter={ location }
     >
     <Marker position={ location } />
     </GoogleMap>
+    { newLat }
+    </div>
   );}
 );
 
