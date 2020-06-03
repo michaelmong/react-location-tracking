@@ -26,7 +26,7 @@ const GetLocation = (props) => {
 
     const postDataAxios = async () => {
         const response = await axios.post(
-            'http://localhost:3773/api',
+            'http://localhost:8080/api',
             data,
             {
                 headers: { 'Content-Type': 'application/json' },

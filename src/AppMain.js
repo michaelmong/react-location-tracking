@@ -43,7 +43,7 @@ const App = () => {
         </div>
       </section>
 
-      <article className="App-article">
+      <article>
         <LoginFacebook newUserID={setNewUserID} />
         { operationData }
       </article>

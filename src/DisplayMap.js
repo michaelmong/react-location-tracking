@@ -21,10 +21,8 @@ const DisplayMap = compose(
       lng: 100.5018,
   })
 
-  let newLat = 0.0;
-  let newLng = 0.0;
   const getDataAxios = async () => {
-    let httpGetAPI = 'http://localhost:3773/api/' + props.id;
+    let httpGetAPI = 'http://localhost:8080/api/' + props.id;
     const response = await axios.get(httpGetAPI).then((res) => {
       let newLocation = { lat: res.data.latitude, lng: res.data.longitude, };
       setLocation(newLocation);
@@ -44,7 +42,6 @@ const DisplayMap = compose(
     >
     <Marker position={ location } />
     </GoogleMap>
-    { newLat }
     </div>
   );}
 );
