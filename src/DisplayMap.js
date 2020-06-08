@@ -22,7 +22,7 @@ const DisplayMap = compose(
   })
 
   const getDataAxios = async () => {
-    let httpGetAPI = 'http://localhost:8080/api/' + props.id;
+    let httpGetAPI = 'http://10.148.0.3:8080/api/' + props.id;
     const response = await axios.get(httpGetAPI).then((res) => {
       let newLocation = { lat: res.data.latitude, lng: res.data.longitude, };
       setLocation(newLocation);
