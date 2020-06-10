@@ -5,7 +5,7 @@ const LoginFacebook = (props) => {
     const [state, setState] = useState({
         auth: false,
         name: '',
-        email: '0',
+        email: 'anonymous',
         picture: '',
     });
 
@@ -33,6 +33,7 @@ const LoginFacebook = (props) => {
         ) :
         facebookData = (
             <FacebookLoginBtn
+                isDisabled = { true }
                 appId = "370434600550192"
                 autoLoad = { false }
                 fields = "name, email, picture"

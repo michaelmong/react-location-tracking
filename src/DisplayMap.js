@@ -14,16 +14,17 @@ const DisplayMap = compose(
   withGoogleMap
 )((props) => {
 
-  let timer = 10000;
+  let timer = 5000;
 
   const [location, setLocation] = useState({
       lat: 13.7563,
       lng: 100.5018,
-  })
+  });
 
   const getDataAxios = async () => {
-    let httpGetAPI = 'http://10.148.0.3:8080/api/' + props.id;
-    const response = await axios.get(httpGetAPI).then((res) => {
+      let httpGetAPI = 'http://10.148.0.3:8080/api/' + props.id;
+//      let httpGetAPI = 'http://localhost:8080/api/' + props.id;
+      const response = await axios.get(httpGetAPI).then((res) => {
       let newLocation = { lat: res.data.latitude, lng: res.data.longitude, };
       setLocation(newLocation);
     });
@@ -34,13 +35,16 @@ const DisplayMap = compose(
     return () => clearInterval(interval);
   }, [location])
 
+  let markerData;
+  ((location.lat != 13.7563)&&(location.lat != 100.5018)) ? markerData = (<Marker position={location} />) : markerData = (<></>);
+
   return(
     <div>
     <GoogleMap
       defaultZoom={10}
       defaultCenter={ location }
     >
-    <Marker position={ location } />
+    { markerData }
     </GoogleMap>
     </div>
   );}

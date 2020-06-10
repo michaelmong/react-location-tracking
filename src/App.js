@@ -5,8 +5,9 @@ import DisplayMap from './DisplayMap';
 import './App.css';
 
 const App = () => {
-  const [userID, setUserID] = useState("0");
-  const [mode, setMode] = useState("t");
+  const [userID, setUserID] = useState("anonymous");
+  const [mode, setMode] = useState("s");
+  const [userMode, setUserMode] = useState("anonymous");
 
   const setNewUserID = (id) => {
     setUserID(id);
@@ -14,22 +15,27 @@ const App = () => {
   
   let operationData;
 
-  (userID === "0") ?
-  operationData = (
-    <div><br />Login to Facebook is for getting your verified email address as an user ID.</div>
-  ) :
-    (mode === "t") ?
-    operationData = (
-    <GetLocation id={userID} />
-    ) :
-    operationData = (
-    <DisplayMap id={userID} />
-    )
+  (mode === "t") ? operationData = (<GetLocation id={userID} />) :
+  (mode === "v") ? operationData = (<DisplayMap id={userID} />) :
+    (userID === "anonymous") ?
+      operationData = (
+      <div>
+        <br />Login with Facebook is for getting your verified email address as an user ID.
+        <br />Facebook login now unavailable due to <a href="https://developers.facebook.com/blog/post/2020/03/24/pausing-individual-verification/">Pausing Individual Verification</a>.
+      </div>
+      ) :
+      operationData = (
+        <div>{ userID }</div>
+      )
 
   const handleSwitchMode = (e) => {
     setMode(e.target.value);
   }
 
+  const handleSwitchUser = (e) => {
+//    setUser(e.target.value);
+      setUserMode("anonymous");
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -38,13 +44,19 @@ const App = () => {
 
       <section className="App-section">
         <div onChange={handleSwitchMode}>
+          <input type="radio" name="mode" value="s" checked={mode === "s"} />Standby mode
           <input type="radio" name="mode" value="t" checked={mode === "t"} />Track mode
           <input type="radio" name="mode" value="v" checked={mode === "v"} />View mode
         </div>
       </section>
 
       <article className="App-article">
-        <LoginFacebook newUserID={setNewUserID} />
+        <div onChange={handleSwitchUser}>
+          <table cellPadding="10" border="0" cellSpacing="10">
+            <tr><td><input type="radio" name="userMode" value="anonymous" checked={userMode === "anonymous"} /></td><td align="left">Anonymous</td></tr>
+            <tr><td><input type="radio" name="userMode" value="facebook" checked={userMode === "facebook"} /></td><td align="left"><LoginFacebook newUserID={setNewUserID} /></td></tr>
+          </table>
+        </div>
         { operationData }
       </article>
       

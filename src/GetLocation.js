@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-//let i = 1;    /*debug*/
-
 const GetLocation = (props) => {
     const [data, setData] = useState({
         lat: 0,
@@ -27,6 +25,7 @@ const GetLocation = (props) => {
     const postDataAxios = async () => {
         const response = await axios.post(
             'http://10.148.0.3:8080/api',
+//            'http://localhost:8080/api',
             data,
             {
                 headers: { 'Content-Type': 'application/json' },
